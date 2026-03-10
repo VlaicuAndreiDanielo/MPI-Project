@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
+import { UpdateApplicationDto } from './dto/update-application.dto';
 
 @Injectable()
 export class ApplicationsService {
@@ -53,6 +54,33 @@ export class ApplicationsService {
     return {
       message: 'Applications fetched successfully',
       applications,
+    };
+  }
+
+  async update(id: string, updateApplicationDto: UpdateApplicationDto) {
+    const existingApplication = await this.prisma.jobApplication.findUnique({
+      where: { id },
+    });
+
+    if (!existingApplication) {
+      throw new NotFoundException('Application not found');
+    }
+
+    const application = await this.prisma.jobApplication.update({
+      where: { id },
+      data: {
+        companyName: updateApplicationDto.companyName,
+        roleTitle: updateApplicationDto.roleTitle,
+        status: updateApplicationDto.status,
+        appliedAt: updateApplicationDto.appliedAt
+          ? new Date(updateApplicationDto.appliedAt)
+          : undefined,
+      },
+    });
+
+    return {
+      message: 'Application updated successfully',
+      application,
     };
   }
 }
