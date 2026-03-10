@@ -1,5 +1,7 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+
 import { PrismaService } from '../prisma/prisma.service';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -38,4 +40,31 @@ export class AuthService {
       },
     };
   }
+
+  async login(loginDto: LoginDto) {
+  const { email, password } = loginDto;
+
+  const user = await this.prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) {
+    throw new UnauthorizedException('Invalid credentials');
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+
+  if (!isPasswordValid) {
+    throw new UnauthorizedException('Invalid credentials');
+  }
+
+  return {
+    message: 'Login successful',
+    user: {
+      id: user.id,
+      fullName: user.fullName,
+      email: user.email,
+    },
+  };
+}
 }
