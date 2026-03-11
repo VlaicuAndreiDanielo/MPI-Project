@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ApplicationStatus } from '@prisma/client';
+import { CreateNoteDto } from './dto/create-note.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { UpdateApplicationDto } from './dto/update-application.dto';
@@ -62,6 +63,11 @@ async findByUserAndStatus(userId: string, status: ApplicationStatus) {
     where: { id: userId },
   });
 
+async findByUserAndStatus(userId: string, status: ApplicationStatus) {
+  const user = await this.prisma.user.findUnique({
+    where: { id: userId },
+  });
+
   if (!user) {
     throw new NotFoundException('User not found');
   }
@@ -81,6 +87,7 @@ async findByUserAndStatus(userId: string, status: ApplicationStatus) {
     applications,
   };
 }
+
   async update(id: string, updateApplicationDto: UpdateApplicationDto) {
     const existingApplication = await this.prisma.jobApplication.findUnique({
       where: { id },
@@ -125,4 +132,25 @@ async findByUserAndStatus(userId: string, status: ApplicationStatus) {
       message: 'Application deleted successfully',
     };
   }
+  async addNote(id: string, createNoteDto: CreateNoteDto) {
+  const existingApplication = await this.prisma.jobApplication.findUnique({
+    where: { id },
+  });
+
+  if (!existingApplication) {
+    throw new NotFoundException('Application not found');
+  }
+
+  const note = await this.prisma.applicationNote.create({
+    data: {
+      applicationId: id,
+      content: createNoteDto.content,
+    },
+  });
+
+  return {
+    message: 'Note added successfully',
+    note,
+  };
+}
 }

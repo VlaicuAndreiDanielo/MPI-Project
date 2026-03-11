@@ -12,6 +12,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApplicationStatus } from '@prisma/client';
+import { CreateNoteDto } from './dto/create-note.dto';
 import { ApplicationsService } from './applications.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { UpdateApplicationDto } from './dto/update-application.dto';
@@ -56,4 +57,13 @@ export class ApplicationsController {
   remove(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.applicationsService.remove(id);
   }
+
+  @Post(':id/notes')
+@HttpCode(HttpStatus.CREATED)
+addNote(
+  @Param('id', new ParseUUIDPipe()) id: string,
+  @Body() createNoteDto: CreateNoteDto,
+) {
+  return this.applicationsService.addNote(id, createNoteDto);
+}
 }
