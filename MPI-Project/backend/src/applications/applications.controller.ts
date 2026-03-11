@@ -12,10 +12,10 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApplicationStatus } from '@prisma/client';
-import { CreateNoteDto } from './dto/create-note.dto';
 import { ApplicationsService } from './applications.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { UpdateApplicationDto } from './dto/update-application.dto';
+import { CreateNoteDto } from './dto/create-note.dto';
 
 @Controller('applications')
 export class ApplicationsController {
@@ -43,6 +43,12 @@ export class ApplicationsController {
     return this.applicationsService.findByUserAndStatus(userId, status);
   }
 
+  @Get('user/:userId/stats')
+  @HttpCode(HttpStatus.OK)
+  getStatsByUser(@Param('userId', new ParseUUIDPipe()) userId: string) {
+    return this.applicationsService.getStatsByUser(userId);
+  }
+
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   update(
@@ -59,11 +65,11 @@ export class ApplicationsController {
   }
 
   @Post(':id/notes')
-@HttpCode(HttpStatus.CREATED)
-addNote(
-  @Param('id', new ParseUUIDPipe()) id: string,
-  @Body() createNoteDto: CreateNoteDto,
-) {
-  return this.applicationsService.addNote(id, createNoteDto);
-}
+  @HttpCode(HttpStatus.CREATED)
+  addNote(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() createNoteDto: CreateNoteDto,
+  ) {
+    return this.applicationsService.addNote(id, createNoteDto);
+  }
 }
