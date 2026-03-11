@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ApplicationStatus } from '@prisma/client';
-import { CreateNoteDto } from './dto/create-note.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { UpdateApplicationDto } from './dto/update-application.dto';
+import { CreateNoteDto } from './dto/create-note.dto';
 
 @Injectable()
 export class ApplicationsService {
@@ -58,10 +58,6 @@ export class ApplicationsService {
       applications,
     };
   }
-async findByUserAndStatus(userId: string, status: ApplicationStatus) {
-  const user = await this.prisma.user.findUnique({
-    where: { id: userId },
-  });
 
 async findByUserAndStatus(userId: string, status: ApplicationStatus) {
   const user = await this.prisma.user.findUnique({
@@ -87,7 +83,46 @@ async findByUserAndStatus(userId: string, status: ApplicationStatus) {
     applications,
   };
 }
+async getStatsByUser(userId: string) {
+  const user = await this.prisma.user.findUnique({
+    where: { id: userId },
+  });
 
+  if (!user) {
+    throw new NotFoundException('User not found');
+  }
+
+  const total = await this.prisma.jobApplication.count({
+    where: { userId },
+  });
+
+  const applied = await this.prisma.jobApplication.count({
+    where: { userId, status: ApplicationStatus.APPLIED },
+  });
+
+  const interview = await this.prisma.jobApplication.count({
+    where: { userId, status: ApplicationStatus.INTERVIEW },
+  });
+
+  const offer = await this.prisma.jobApplication.count({
+    where: { userId, status: ApplicationStatus.OFFER },
+  });
+
+  const rejected = await this.prisma.jobApplication.count({
+    where: { userId, status: ApplicationStatus.REJECTED },
+  });
+
+  return {
+    message: 'Dashboard statistics fetched successfully',
+    stats: {
+      total,
+      applied,
+      interview,
+      offer,
+      rejected,
+    },
+  };
+}
   async update(id: string, updateApplicationDto: UpdateApplicationDto) {
     const existingApplication = await this.prisma.jobApplication.findUnique({
       where: { id },
