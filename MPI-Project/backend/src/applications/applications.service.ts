@@ -58,6 +58,10 @@ export class ApplicationsService {
       applications,
     };
   }
+async findByUserAndStatus(userId: string, status: ApplicationStatus) {
+  const user = await this.prisma.user.findUnique({
+    where: { id: userId },
+  });
 
 async findByUserAndStatus(userId: string, status: ApplicationStatus) {
   const user = await this.prisma.user.findUnique({
