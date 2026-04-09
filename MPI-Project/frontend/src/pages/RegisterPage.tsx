@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { authService } from '../services/auth.service';
 
@@ -118,6 +119,10 @@ export function RegisterPage() {
         {error ? <p className="auth-message auth-message-error">{error}</p> : null}
         {successMessage ? <p className="auth-message auth-message-success">{successMessage}</p> : null}
       </form>
+
+      <p className="auth-switch">
+        Ai cont? <Link to="/login">Login</Link>
+      </p>
     </AuthLayout>
   );
 }

@@ -4,14 +4,27 @@ export interface RegisterPayload {
   password: string;
 }
 
-export interface RegisteredUser {
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface BasicUser {
   id: number;
   fullName: string;
   email: string;
+}
+
+export interface RegisteredUser extends BasicUser {
   createdAt: string;
 }
 
 export interface RegisterResponse {
   message: string;
   user: RegisteredUser;
+}
+
+export interface LoginResponse {
+  message: string;
+  user: BasicUser;
 }
