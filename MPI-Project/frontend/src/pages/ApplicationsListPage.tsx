@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { applicationsService } from '../services/applications.service';
 import { useAuth } from '../context/AuthContext';
 import type { JobApplication } from '../types/applications';
@@ -99,9 +100,14 @@ export function ApplicationsListPage() {
             <h1>Applications</h1>
             <p className="auth-subtitle">Hello, {user?.fullName}. Here you can see all your applications.</p>
           </div>
-          <button className="auth-logout" type="button" onClick={logout}>
-            Logout
-          </button>
+          <div className="applications-actions">
+            <Link className="applications-add" to="/applications/new">
+              Add application
+            </Link>
+            <button className="auth-logout" type="button" onClick={logout}>
+              Logout
+            </button>
+          </div>
         </header>
         {content}
       </section>

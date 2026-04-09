@@ -15,3 +15,16 @@ export interface GetUserApplicationsResponse {
   message: string;
   applications: JobApplication[];
 }
+
+export interface CreateJobApplicationPayload {
+  userId: string;
+  companyName: string;
+  roleTitle: string;
+  status: ApplicationStatus;
+  appliedAt: string;
+}
+
+export interface CreateJobApplicationResponse {
+  message: string;
+  application: JobApplication;
+}
