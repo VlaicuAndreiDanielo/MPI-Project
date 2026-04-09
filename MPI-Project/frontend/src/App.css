@@ -114,6 +114,100 @@
   cursor: pointer;
 }
 
+.applications-shell {
+  min-height: 100vh;
+  padding: 32px;
+}
+
+.applications-panel {
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(28, 39, 56, 0.12);
+  box-shadow: 0 20px 60px rgba(16, 23, 36, 0.08);
+  padding: 28px;
+}
+
+.applications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.applications-header .auth-logout {
+  margin-top: 0;
+  width: auto;
+  min-width: 120px;
+}
+
+.applications-table-wrap {
+  margin-top: 24px;
+  overflow-x: auto;
+}
+
+.applications-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 760px;
+}
+
+.applications-table th,
+.applications-table td {
+  text-align: left;
+  padding: 12px 10px;
+  border-bottom: 1px solid #e3e9f2;
+  color: #1e2b3b;
+}
+
+.applications-table th {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #54657c;
+}
+
+.applications-state {
+  margin-top: 24px;
+  font-size: 15px;
+  color: #45556b;
+}
+
+.applications-state-error {
+  color: #b11a37;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-applied {
+  background: #e6f0ff;
+  color: #225ea7;
+}
+
+.status-interview {
+  background: #fff3e0;
+  color: #9a5a14;
+}
+
+.status-offer {
+  background: #e6faef;
+  color: #0f7a43;
+}
+
+.status-rejected {
+  background: #ffecee;
+  color: #b42335;
+}
+
 @media (max-width: 640px) {
   .auth-shell {
     padding: 16px;
@@ -121,5 +215,21 @@
 
   .auth-panel {
     padding: 24px;
+  }
+
+  .applications-shell {
+    padding: 16px;
+  }
+
+  .applications-panel {
+    padding: 18px;
+  }
+
+  .applications-header {
+    flex-direction: column;
+  }
+
+  .applications-header .auth-logout {
+    width: 100%;
   }
 }

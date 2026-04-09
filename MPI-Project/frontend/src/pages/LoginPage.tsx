@@ -80,7 +80,7 @@ export function LoginPage() {
       </form>
 
       <p className="auth-switch">
-        N-ai cont? <Link to="/register">Register</Link>
+        Don't have an account? <Link to="/register">Register</Link>
       </p>
     </AuthLayout>
   );
