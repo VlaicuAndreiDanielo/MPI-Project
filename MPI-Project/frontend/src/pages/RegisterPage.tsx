@@ -121,7 +121,7 @@ export function RegisterPage() {
       </form>
 
       <p className="auth-switch">
-        Ai cont? <Link to="/login">Login</Link>
+        Already have an account? <Link to="/login">Login</Link>
       </p>
     </AuthLayout>
   );

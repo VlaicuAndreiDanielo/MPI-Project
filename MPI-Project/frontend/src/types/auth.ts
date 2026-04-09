@@ -10,7 +10,7 @@ export interface LoginPayload {
 }
 
 export interface BasicUser {
-  id: number;
+  id: string;
   fullName: string;
   email: string;
 }

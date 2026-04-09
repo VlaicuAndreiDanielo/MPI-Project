@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { ApplicationsListPage } from '../pages/ApplicationsListPage';
 import { LoginPage } from '../pages/LoginPage';
-import { ProtectedHomePage } from '../pages/ProtectedHomePage';
 import { RegisterPage } from '../pages/RegisterPage';
 import { ProtectedRoute } from './ProtectedRoute';
 
@@ -20,7 +20,7 @@ export function AppRouter() {
       />
 
       <Route element={<ProtectedRoute />}>
-        <Route path="/" element={<ProtectedHomePage />} />
+        <Route path="/" element={<ApplicationsListPage />} />
       </Route>
 
       <Route
