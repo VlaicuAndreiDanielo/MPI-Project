@@ -1,6 +1,11 @@
 import { AxiosError } from 'axios';
 import { httpClient } from './http-client';
-import type { RegisterPayload, RegisterResponse } from '../types/auth';
+import type {
+  LoginPayload,
+  LoginResponse,
+  RegisterPayload,
+  RegisterResponse,
+} from '../types/auth';
 
 interface ApiErrorResponse {
   message?: string | string[];
@@ -31,6 +36,16 @@ const register = async (payload: RegisterPayload): Promise<RegisterResponse> => 
   }
 };
 
+const login = async (payload: LoginPayload): Promise<LoginResponse> => {
+  try {
+    const response = await httpClient.post<LoginResponse>('/auth/login', payload);
+    return response.data;
+  } catch (error) {
+    throw new Error(toErrorMessage(error));
+  }
+};
+
 export const authService = {
   register,
+  login,
 };

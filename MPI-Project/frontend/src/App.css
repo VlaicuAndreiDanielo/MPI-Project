@@ -85,6 +85,35 @@
   color: #0d7a43;
 }
 
+.auth-switch {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #3e4f65;
+}
+
+.auth-switch a {
+  color: #1d6fcf;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+.auth-logout {
+  margin-top: 24px;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  width: 100%;
+  font: inherit;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #d13f5e, #c62828);
+  cursor: pointer;
+}
+
 @media (max-width: 640px) {
   .auth-shell {
     padding: 16px;
