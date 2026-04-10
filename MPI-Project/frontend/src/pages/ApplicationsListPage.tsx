@@ -69,6 +69,7 @@ export function ApplicationsListPage() {
               <th>Status</th>
               <th>Applied</th>
               <th>Created</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -83,6 +84,11 @@ export function ApplicationsListPage() {
                 </td>
                 <td>{formatDate(application.appliedAt)}</td>
                 <td>{formatDate(application.createdAt)}</td>
+                <td>
+                  <Link className="table-edit-link" to={`/applications/${application.id}/edit`}>
+                    Edit
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>

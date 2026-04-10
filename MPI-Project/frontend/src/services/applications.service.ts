@@ -1,10 +1,14 @@
 import { httpClient } from './http-client';
 import { AxiosError } from 'axios';
 import type {
+  AddApplicationNotePayload,
+  AddApplicationNoteResponse,
   CreateJobApplicationPayload,
   CreateJobApplicationResponse,
   GetUserApplicationsResponse,
   JobApplication,
+  UpdateJobApplicationPayload,
+  UpdateJobApplicationResponse,
 } from '../types/applications';
 
 interface ApiErrorResponse {
@@ -54,7 +58,41 @@ const create = async (
   }
 };
 
+const update = async (
+  id: string,
+  payload: UpdateJobApplicationPayload,
+): Promise<UpdateJobApplicationResponse> => {
+  try {
+    const response = await httpClient.patch<UpdateJobApplicationResponse>(
+      `/applications/${id}`,
+      payload,
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error(toErrorMessage(error));
+  }
+};
+
+const addNote = async (
+  id: string,
+  payload: AddApplicationNotePayload,
+): Promise<AddApplicationNoteResponse> => {
+  try {
+    const response = await httpClient.post<AddApplicationNoteResponse>(
+      `/applications/${id}/notes`,
+      payload,
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error(toErrorMessage(error));
+  }
+};
+
 export const applicationsService = {
   getByUser,
   create,
+  update,
+  addNote,
 };

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { ApplicationStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
@@ -132,6 +132,10 @@ async getStatsByUser(userId: string) {
       throw new NotFoundException('Application not found');
     }
 
+    if (existingApplication.userId !== updateApplicationDto.userId) {
+      throw new ForbiddenException('You can edit only your own applications');
+    }
+
     const application = await this.prisma.jobApplication.update({
       where: { id },
       data: {
@@ -174,6 +178,10 @@ async getStatsByUser(userId: string) {
 
   if (!existingApplication) {
     throw new NotFoundException('Application not found');
+  }
+
+  if (existingApplication.userId !== createNoteDto.userId) {
+    throw new ForbiddenException('You can edit only your own applications');
   }
 
   const note = await this.prisma.applicationNote.create({
