@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { UpdateApplicationDto } from './dto/update-application.dto';
 import { CreateNoteDto } from './dto/create-note.dto';
+import { UpdateNoteDto } from './dto/update-note.dto';
 
 @Injectable()
 export class ApplicationsService {
@@ -200,4 +201,90 @@ async getStatsByUser(userId: string) {
     note,
   };
 }
+
+  async getNotesByApplication(id: string, userId: string) {
+    const existingApplication = await this.prisma.jobApplication.findUnique({
+      where: { id },
+    });
+
+    if (!existingApplication) {
+      throw new NotFoundException('Application not found');
+    }
+
+    if (existingApplication.userId !== userId) {
+      throw new ForbiddenException('You can view notes only for your own applications');
+    }
+
+    const notes = await this.prisma.applicationNote.findMany({
+      where: { applicationId: id },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return {
+      message: 'Notes fetched successfully',
+      notes,
+    };
+  }
+
+  async updateNote(id: string, noteId: string, updateNoteDto: UpdateNoteDto) {
+    const existingApplication = await this.prisma.jobApplication.findUnique({
+      where: { id },
+    });
+
+    if (!existingApplication) {
+      throw new NotFoundException('Application not found');
+    }
+
+    if (existingApplication.userId !== updateNoteDto.userId) {
+      throw new ForbiddenException('You can edit only your own applications');
+    }
+
+    const existingNote = await this.prisma.applicationNote.findUnique({
+      where: { id: noteId },
+    });
+
+    if (!existingNote || existingNote.applicationId !== id) {
+      throw new NotFoundException('Note not found');
+    }
+
+    const note = await this.prisma.applicationNote.update({
+      where: { id: noteId },
+      data: { content: updateNoteDto.content },
+    });
+
+    return {
+      message: 'Note updated successfully',
+      note,
+    };
+  }
+
+  async removeNote(id: string, noteId: string, userId: string) {
+    const existingApplication = await this.prisma.jobApplication.findUnique({
+      where: { id },
+    });
+
+    if (!existingApplication) {
+      throw new NotFoundException('Application not found');
+    }
+
+    if (existingApplication.userId !== userId) {
+      throw new ForbiddenException('You can delete notes only for your own applications');
+    }
+
+    const existingNote = await this.prisma.applicationNote.findUnique({
+      where: { id: noteId },
+    });
+
+    if (!existingNote || existingNote.applicationId !== id) {
+      throw new NotFoundException('Note not found');
+    }
+
+    await this.prisma.applicationNote.delete({
+      where: { id: noteId },
+    });
+
+    return {
+      message: 'Note deleted successfully',
+    };
+  }
 }

@@ -320,6 +320,175 @@
   color: #b42335;
 }
 
+.notes-section {
+  margin-top: 1.5rem;
+  border: 1px solid #c6d3e8;
+  border-radius: 1rem;
+  background: #ffffff;
+  padding: 1.2rem;
+  box-shadow: inset 0 0 0 1px #eef4ff;
+}
+
+.notes-section h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #172033;
+}
+
+.notes-create {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 0.9rem;
+}
+
+.notes-create textarea,
+.notes-item textarea {
+  resize: none;
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  min-height: 110px;
+  border: 1px solid #c3d0e6;
+  border-radius: 12px;
+  padding: 12px 13px;
+  font: inherit;
+  font-size: 0.96rem;
+  line-height: 1.45;
+  color: #1f2c45;
+  background: #fcfdff;
+}
+
+.notes-create textarea:focus,
+.notes-item textarea:focus {
+  outline: 2px solid rgba(35, 126, 225, 0.25);
+  border-color: #237ee1;
+}
+
+.notes-create button {
+  justify-self: start;
+}
+
+.notes-button {
+  border-radius: 9px;
+  padding: 11px 16px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.notes-button:focus-visible {
+  outline: 2px solid rgba(35, 126, 225, 0.25);
+  outline-offset: 1px;
+}
+
+.notes-button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+  transform: none;
+  box-shadow: none;
+}
+
+.notes-button-primary {
+  color: #ffffff;
+  background: linear-gradient(135deg, #1b8b9b, #237ee1);
+  box-shadow: 0 8px 18px rgba(35, 126, 225, 0.18);
+}
+
+.notes-button-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(35, 126, 225, 0.24);
+}
+
+.notes-button-secondary {
+  color: #234162;
+  background: #edf4ff;
+  border-color: #c9d8ee;
+}
+
+.notes-button-secondary:hover:not(:disabled) {
+  background: #e2efff;
+}
+
+.notes-button-danger {
+  color: #ffffff;
+  background: linear-gradient(135deg, #d25757, #bd2f45);
+  box-shadow: 0 8px 18px rgba(189, 47, 69, 0.2);
+}
+
+.notes-button-danger:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(189, 47, 69, 0.26);
+}
+
+.notes-button-compact {
+  min-width: 96px;
+  padding: 8px 12px;
+  font-size: 0.88rem;
+}
+
+.notes-button-edit {
+  color: #ffffff;
+  background: linear-gradient(135deg, #268ad3, #1d6fcf);
+  border-color: #1d6fcf;
+  box-shadow: 0 6px 14px rgba(29, 111, 207, 0.22);
+}
+
+.notes-button-edit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(29, 111, 207, 0.28);
+}
+
+.notes-list {
+  list-style: none;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.notes-item {
+  border: 1px solid #ccd9ed;
+  border-radius: 0.9rem;
+  padding: 0.95rem;
+  background: #f8faff;
+  overflow: hidden;
+}
+
+.notes-item p {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  color: #1f2c45;
+}
+
+.notes-item-meta {
+  margin-top: 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  font-size: 0.85rem;
+  color: #5a6886;
+}
+
+.notes-item-actions {
+  margin-top: 0.6rem;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.notes-item-actions button {
+  min-width: 130px;
+}
+
+.notes-item-meta .notes-button {
+  min-width: 96px;
+}
+
 @media (max-width: 640px) {
   .auth-shell {
     padding: 16px;

@@ -50,13 +50,38 @@ export interface AddApplicationNotePayload {
 
 export interface AddApplicationNoteResponse {
   message: string;
-  note: {
-    id: string;
-    applicationId: string;
-    content: string;
-    createdAt: string;
-    updatedAt: string;
-  };
+  note: ApplicationNote;
+}
+
+export interface ApplicationNote {
+  id: string;
+  applicationId: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface GetApplicationNotesResponse {
+  message: string;
+  notes: ApplicationNote[];
+}
+
+export interface UpdateApplicationNotePayload {
+  userId: string;
+  content: string;
+}
+
+export interface UpdateApplicationNoteResponse {
+  message: string;
+  note: ApplicationNote;
+}
+
+export interface DeleteApplicationNotePayload {
+  userId: string;
+}
+
+export interface DeleteApplicationNoteResponse {
+  message: string;
 }
 
 export interface DeleteJobApplicationPayload {
