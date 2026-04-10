@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { applicationsService } from '../services/applications.service';
 import { useAuth } from '../context/AuthContext';
-import type { JobApplication } from '../types/applications';
+import type { ApplicationFilterStatus, JobApplication } from '../types/applications';
 
 const STATUS_LABELS: Record<JobApplication['status'], string> = {
   APPLIED: 'Applied',
@@ -24,6 +24,7 @@ export function ApplicationsListPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [filterStatus, setFilterStatus] = useState<ApplicationFilterStatus>('ALL');
 
   const handleDelete = async (application: JobApplication) => {
     if (!user) {
@@ -66,7 +67,10 @@ export function ApplicationsListPage() {
       setError('');
 
       try {
-        const response = await applicationsService.getByUser(user.id);
+        const response =
+          filterStatus === 'ALL'
+            ? await applicationsService.getByUser(user.id)
+            : await applicationsService.getByUserAndStatus(user.id, filterStatus);
         setApplications(response);
       } catch {
         setError('Could not load applications list.');
@@ -76,7 +80,7 @@ export function ApplicationsListPage() {
     };
 
     loadApplications();
-  }, [user]);
+  }, [filterStatus, user]);
 
   const content = useMemo(() => {
     if (isLoading) {
@@ -88,7 +92,13 @@ export function ApplicationsListPage() {
     }
 
     if (applications.length === 0) {
-      return <p className="applications-state">No applications yet.</p>;
+      return (
+        <p className="applications-state">
+          {filterStatus === 'ALL'
+            ? 'No applications yet.'
+            : `No applications with status ${STATUS_LABELS[filterStatus]}.`}
+        </p>
+      );
     }
 
     return (
@@ -137,7 +147,7 @@ export function ApplicationsListPage() {
         </table>
       </div>
     );
-  }, [applications, error, isLoading]);
+  }, [applications, error, filterStatus, isLoading]);
 
   return (
     <main className="applications-shell">
@@ -157,6 +167,22 @@ export function ApplicationsListPage() {
             </button>
           </div>
         </header>
+
+        <div className="applications-filter-row">
+          <label htmlFor="statusFilter">Filter by status</label>
+          <select
+            id="statusFilter"
+            value={filterStatus}
+            onChange={(event) => setFilterStatus(event.target.value as ApplicationFilterStatus)}
+          >
+            <option value="ALL">All</option>
+            <option value="APPLIED">Applied</option>
+            <option value="INTERVIEW">Interview</option>
+            <option value="OFFER">Offer</option>
+            <option value="REJECTED">Rejected</option>
+          </select>
+        </div>
+
         {content}
       </section>
     </main>
