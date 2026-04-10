@@ -201,6 +201,33 @@
   overflow-x: auto;
 }
 
+.applications-filter-row {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.applications-filter-row label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2e3d52;
+}
+
+.applications-filter-row select {
+  border: 1px solid #cad2e0;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font: inherit;
+  color: #1f2b3a;
+  background: #f9fbff;
+}
+
+.applications-filter-row select:focus {
+  outline: 2px solid rgba(35, 126, 225, 0.25);
+  border-color: #237ee1;
+}
+
 .applications-table {
   width: 100%;
   border-collapse: collapse;
@@ -316,6 +343,11 @@
 
   .applications-header {
     flex-direction: column;
+  }
+
+  .applications-filter-row {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .applications-actions {

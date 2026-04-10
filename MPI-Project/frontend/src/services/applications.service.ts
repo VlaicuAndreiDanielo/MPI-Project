@@ -1,6 +1,7 @@
 import { httpClient } from './http-client';
 import { AxiosError } from 'axios';
 import type {
+  ApplicationStatus,
   AddApplicationNotePayload,
   AddApplicationNoteResponse,
   CreateJobApplicationPayload,
@@ -37,6 +38,21 @@ const getByUser = async (userId: string): Promise<JobApplication[]> => {
   try {
     const response = await httpClient.get<GetUserApplicationsResponse>(
       `/applications/user/${userId}`,
+    );
+
+    return response.data.applications;
+  } catch (error) {
+    throw new Error(toErrorMessage(error));
+  }
+};
+
+const getByUserAndStatus = async (
+  userId: string,
+  status: ApplicationStatus,
+): Promise<JobApplication[]> => {
+  try {
+    const response = await httpClient.get<GetUserApplicationsResponse>(
+      `/applications/user/${userId}/status/${status}`,
     );
 
     return response.data.applications;
@@ -110,6 +126,7 @@ const remove = async (
 
 export const applicationsService = {
   getByUser,
+  getByUserAndStatus,
   create,
   update,
   addNote,
