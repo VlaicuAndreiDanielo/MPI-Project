@@ -2,7 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { applicationsService } from '../services/applications.service';
 import { useAuth } from '../context/AuthContext';
-import type { ApplicationFilterStatus, JobApplication } from '../types/applications';
+import type {
+  ApplicationFilterStatus,
+  JobApplication,
+  UserApplicationStats,
+} from '../types/applications';
 
 const STATUS_LABELS: Record<JobApplication['status'], string> = {
   APPLIED: 'Applied',
@@ -25,6 +29,27 @@ export function ApplicationsListPage() {
   const [error, setError] = useState('');
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<ApplicationFilterStatus>('ALL');
+  const [stats, setStats] = useState<UserApplicationStats>({
+    total: 0,
+    applied: 0,
+    interview: 0,
+    offer: 0,
+    rejected: 0,
+  });
+  const [isStatsLoading, setIsStatsLoading] = useState(true);
+
+  const loadStats = async (userId: string) => {
+    setIsStatsLoading(true);
+
+    try {
+      const nextStats = await applicationsService.getStatsByUser(userId);
+      setStats(nextStats);
+    } catch {
+      setError('Could not load dashboard statistics.');
+    } finally {
+      setIsStatsLoading(false);
+    }
+  };
 
   const handleDelete = async (application: JobApplication) => {
     if (!user) {
@@ -46,6 +71,7 @@ export function ApplicationsListPage() {
     try {
       await applicationsService.remove(application.id, { userId: user.id });
       setApplications((current) => current.filter((item) => item.id !== application.id));
+      await loadStats(user.id);
     } catch (deleteError) {
       setError(
         deleteError instanceof Error
@@ -67,15 +93,23 @@ export function ApplicationsListPage() {
       setError('');
 
       try {
-        const response =
+        const applicationsRequest =
           filterStatus === 'ALL'
-            ? await applicationsService.getByUser(user.id)
-            : await applicationsService.getByUserAndStatus(user.id, filterStatus);
+            ? applicationsService.getByUser(user.id)
+            : applicationsService.getByUserAndStatus(user.id, filterStatus);
+
+        const [response, statsResponse] = await Promise.all([
+          applicationsRequest,
+          applicationsService.getStatsByUser(user.id),
+        ]);
+
         setApplications(response);
+        setStats(statsResponse);
       } catch {
-        setError('Could not load applications list.');
+        setError('Could not load dashboard data.');
       } finally {
         setIsLoading(false);
+        setIsStatsLoading(false);
       }
     };
 
@@ -167,6 +201,29 @@ export function ApplicationsListPage() {
             </button>
           </div>
         </header>
+
+        <section className="applications-stats-grid" aria-label="Applications statistics">
+          <article className="applications-stat-card">
+            <p>Total applications</p>
+            <strong>{isStatsLoading ? '...' : stats.total}</strong>
+          </article>
+          <article className="applications-stat-card">
+            <p>Applied</p>
+            <strong>{isStatsLoading ? '...' : stats.applied}</strong>
+          </article>
+          <article className="applications-stat-card">
+            <p>Interview</p>
+            <strong>{isStatsLoading ? '...' : stats.interview}</strong>
+          </article>
+          <article className="applications-stat-card">
+            <p>Offer</p>
+            <strong>{isStatsLoading ? '...' : stats.offer}</strong>
+          </article>
+          <article className="applications-stat-card">
+            <p>Rejected</p>
+            <strong>{isStatsLoading ? '...' : stats.rejected}</strong>
+          </article>
+        </section>
 
         <div className="applications-filter-row">
           <label htmlFor="statusFilter">Filter by status</label>

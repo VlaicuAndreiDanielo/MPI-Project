@@ -11,8 +11,10 @@ import type {
   DeleteJobApplicationPayload,
   DeleteJobApplicationResponse,
   GetApplicationNotesResponse,
+  GetUserApplicationStatsResponse,
   GetUserApplicationsResponse,
   JobApplication,
+  UserApplicationStats,
   UpdateApplicationNotePayload,
   UpdateApplicationNoteResponse,
   UpdateJobApplicationPayload,
@@ -61,6 +63,18 @@ const getByUserAndStatus = async (
     );
 
     return response.data.applications;
+  } catch (error) {
+    throw new Error(toErrorMessage(error));
+  }
+};
+
+const getStatsByUser = async (userId: string): Promise<UserApplicationStats> => {
+  try {
+    const response = await httpClient.get<GetUserApplicationStatsResponse>(
+      `/applications/user/${userId}/stats`,
+    );
+
+    return response.data.stats;
   } catch (error) {
     throw new Error(toErrorMessage(error));
   }
@@ -181,6 +195,7 @@ const remove = async (
 export const applicationsService = {
   getByUser,
   getByUserAndStatus,
+  getStatsByUser,
   create,
   update,
   addNote,

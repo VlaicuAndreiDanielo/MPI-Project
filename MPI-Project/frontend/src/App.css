@@ -191,6 +191,37 @@
   min-width: 120px;
 }
 
+.applications-stats-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.applications-stat-card {
+  border: 1px solid #d9e2f1;
+  border-radius: 12px;
+  background: #f7faff;
+  padding: 12px;
+}
+
+.applications-stat-card p {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #52637a;
+  text-transform: uppercase;
+}
+
+.applications-stat-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 26px;
+  line-height: 1;
+  color: #152844;
+}
+
 .create-application-panel {
   width: min(100%, 560px);
   margin: 48px auto;
@@ -517,6 +548,10 @@
   .applications-filter-row {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .applications-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .applications-actions {
