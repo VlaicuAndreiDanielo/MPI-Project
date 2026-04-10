@@ -57,3 +57,11 @@ export interface AddApplicationNoteResponse {
     updatedAt: string;
   };
 }
+
+export interface DeleteJobApplicationPayload {
+  userId: string;
+}
+
+export interface DeleteJobApplicationResponse {
+  message: string;
+}

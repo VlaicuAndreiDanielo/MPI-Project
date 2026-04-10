@@ -154,13 +154,17 @@ async getStatsByUser(userId: string) {
     };
   }
 
-  async remove(id: string) {
+  async remove(id: string, userId: string) {
     const existingApplication = await this.prisma.jobApplication.findUnique({
       where: { id },
     });
 
     if (!existingApplication) {
       throw new NotFoundException('Application not found');
+    }
+
+    if (existingApplication.userId !== userId) {
+      throw new ForbiddenException('You can delete only your own applications');
     }
 
     await this.prisma.jobApplication.delete({
