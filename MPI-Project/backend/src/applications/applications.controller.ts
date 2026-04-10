@@ -17,6 +17,8 @@ import { CreateApplicationDto } from './dto/create-application.dto';
 import { UpdateApplicationDto } from './dto/update-application.dto';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { DeleteApplicationDto } from './dto/delete-application.dto';
+import { UpdateNoteDto } from './dto/update-note.dto';
+import { DeleteNoteDto } from './dto/delete-note.dto';
 
 @Controller('applications')
 export class ApplicationsController {
@@ -75,5 +77,34 @@ export class ApplicationsController {
     @Body() createNoteDto: CreateNoteDto,
   ) {
     return this.applicationsService.addNote(id, createNoteDto);
+  }
+
+  @Get(':id/notes/user/:userId')
+  @HttpCode(HttpStatus.OK)
+  getNotesByApplication(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Param('userId', new ParseUUIDPipe()) userId: string,
+  ) {
+    return this.applicationsService.getNotesByApplication(id, userId);
+  }
+
+  @Patch(':id/notes/:noteId')
+  @HttpCode(HttpStatus.OK)
+  updateNote(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Param('noteId', new ParseUUIDPipe()) noteId: string,
+    @Body() updateNoteDto: UpdateNoteDto,
+  ) {
+    return this.applicationsService.updateNote(id, noteId, updateNoteDto);
+  }
+
+  @Delete(':id/notes/:noteId')
+  @HttpCode(HttpStatus.OK)
+  removeNote(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Param('noteId', new ParseUUIDPipe()) noteId: string,
+    @Body() deleteNoteDto: DeleteNoteDto,
+  ) {
+    return this.applicationsService.removeNote(id, noteId, deleteNoteDto.userId);
   }
 }

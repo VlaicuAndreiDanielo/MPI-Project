@@ -6,10 +6,15 @@ import type {
   AddApplicationNoteResponse,
   CreateJobApplicationPayload,
   CreateJobApplicationResponse,
+  DeleteApplicationNotePayload,
+  DeleteApplicationNoteResponse,
   DeleteJobApplicationPayload,
   DeleteJobApplicationResponse,
+  GetApplicationNotesResponse,
   GetUserApplicationsResponse,
   JobApplication,
+  UpdateApplicationNotePayload,
+  UpdateApplicationNoteResponse,
   UpdateJobApplicationPayload,
   UpdateJobApplicationResponse,
 } from '../types/applications';
@@ -108,6 +113,55 @@ const addNote = async (
   }
 };
 
+const getNotesByApplication = async (
+  id: string,
+  userId: string,
+): Promise<GetApplicationNotesResponse['notes']> => {
+  try {
+    const response = await httpClient.get<GetApplicationNotesResponse>(
+      `/applications/${id}/notes/user/${userId}`,
+    );
+
+    return response.data.notes;
+  } catch (error) {
+    throw new Error(toErrorMessage(error));
+  }
+};
+
+const updateNote = async (
+  applicationId: string,
+  noteId: string,
+  payload: UpdateApplicationNotePayload,
+): Promise<UpdateApplicationNoteResponse> => {
+  try {
+    const response = await httpClient.patch<UpdateApplicationNoteResponse>(
+      `/applications/${applicationId}/notes/${noteId}`,
+      payload,
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error(toErrorMessage(error));
+  }
+};
+
+const removeNote = async (
+  applicationId: string,
+  noteId: string,
+  payload: DeleteApplicationNotePayload,
+): Promise<DeleteApplicationNoteResponse> => {
+  try {
+    const response = await httpClient.delete<DeleteApplicationNoteResponse>(
+      `/applications/${applicationId}/notes/${noteId}`,
+      { data: payload },
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error(toErrorMessage(error));
+  }
+};
+
 const remove = async (
   id: string,
   payload: DeleteJobApplicationPayload,
@@ -130,5 +184,8 @@ export const applicationsService = {
   create,
   update,
   addNote,
+  getNotesByApplication,
+  updateNote,
+  removeNote,
   remove,
 };
