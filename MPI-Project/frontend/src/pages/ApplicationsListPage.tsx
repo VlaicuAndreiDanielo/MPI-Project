@@ -23,6 +23,38 @@ export function ApplicationsListPage() {
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const handleDelete = async (application: JobApplication) => {
+    if (!user) {
+      setError('You need to be logged in.');
+      return;
+    }
+
+    const isConfirmed = window.confirm(
+      `Delete application for ${application.companyName} - ${application.roleTitle}?`,
+    );
+
+    if (!isConfirmed) {
+      return;
+    }
+
+    setDeletingId(application.id);
+    setError('');
+
+    try {
+      await applicationsService.remove(application.id, { userId: user.id });
+      setApplications((current) => current.filter((item) => item.id !== application.id));
+    } catch (deleteError) {
+      setError(
+        deleteError instanceof Error
+          ? deleteError.message
+          : 'Could not delete application. Please try again.',
+      );
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   useEffect(() => {
     if (!user) {
@@ -85,9 +117,19 @@ export function ApplicationsListPage() {
                 <td>{formatDate(application.appliedAt)}</td>
                 <td>{formatDate(application.createdAt)}</td>
                 <td>
-                  <Link className="table-edit-link" to={`/applications/${application.id}/edit`}>
-                    Edit
-                  </Link>
+                  <div className="table-actions">
+                    <Link className="table-edit-link" to={`/applications/${application.id}/edit`}>
+                      Edit
+                    </Link>
+                    <button
+                      className="table-delete-button"
+                      type="button"
+                      onClick={() => handleDelete(application)}
+                      disabled={deletingId === application.id}
+                    >
+                      {deletingId === application.id ? 'Deleting...' : 'Delete'}
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

@@ -233,6 +233,27 @@
   text-decoration: underline;
 }
 
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.table-delete-button {
+  border: none;
+  background: transparent;
+  color: #b42335;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+
+.table-delete-button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
 .applications-state {
   margin-top: 24px;
   font-size: 15px;

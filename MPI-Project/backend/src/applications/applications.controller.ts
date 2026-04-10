@@ -16,6 +16,7 @@ import { ApplicationsService } from './applications.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { UpdateApplicationDto } from './dto/update-application.dto';
 import { CreateNoteDto } from './dto/create-note.dto';
+import { DeleteApplicationDto } from './dto/delete-application.dto';
 
 @Controller('applications')
 export class ApplicationsController {
@@ -60,8 +61,11 @@ export class ApplicationsController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  remove(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.applicationsService.remove(id);
+  remove(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() deleteApplicationDto: DeleteApplicationDto,
+  ) {
+    return this.applicationsService.remove(id, deleteApplicationDto.userId);
   }
 
   @Post(':id/notes')

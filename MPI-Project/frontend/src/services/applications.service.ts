@@ -5,6 +5,8 @@ import type {
   AddApplicationNoteResponse,
   CreateJobApplicationPayload,
   CreateJobApplicationResponse,
+  DeleteJobApplicationPayload,
+  DeleteJobApplicationResponse,
   GetUserApplicationsResponse,
   JobApplication,
   UpdateJobApplicationPayload,
@@ -90,9 +92,26 @@ const addNote = async (
   }
 };
 
+const remove = async (
+  id: string,
+  payload: DeleteJobApplicationPayload,
+): Promise<DeleteJobApplicationResponse> => {
+  try {
+    const response = await httpClient.delete<DeleteJobApplicationResponse>(
+      `/applications/${id}`,
+      { data: payload },
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error(toErrorMessage(error));
+  }
+};
+
 export const applicationsService = {
   getByUser,
   create,
   update,
   addNote,
+  remove,
 };
