@@ -58,12 +58,27 @@
   background: #f9fbff;
 }
 
+.auth-form textarea {
+  border: 1px solid #cad2e0;
+  border-radius: 10px;
+  padding: 11px 12px;
+  font: inherit;
+  color: #1f2b3a;
+  background: #f9fbff;
+  resize: vertical;
+}
+
 .auth-form input:focus {
   outline: 2px solid rgba(35, 126, 225, 0.25);
   border-color: #237ee1;
 }
 
 .auth-form select:focus {
+  outline: 2px solid rgba(35, 126, 225, 0.25);
+  border-color: #237ee1;
+}
+
+.auth-form textarea:focus {
   outline: 2px solid rgba(35, 126, 225, 0.25);
   border-color: #237ee1;
 }
@@ -206,6 +221,16 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #54657c;
+}
+
+.table-edit-link {
+  color: #1d6fcf;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.table-edit-link:hover {
+  text-decoration: underline;
 }
 
 .applications-state {

@@ -28,3 +28,32 @@ export interface CreateJobApplicationResponse {
   message: string;
   application: JobApplication;
 }
+
+export interface UpdateJobApplicationPayload {
+  userId: string;
+  companyName: string;
+  roleTitle: string;
+  status: ApplicationStatus;
+  appliedAt: string;
+}
+
+export interface UpdateJobApplicationResponse {
+  message: string;
+  application: JobApplication;
+}
+
+export interface AddApplicationNotePayload {
+  userId: string;
+  content: string;
+}
+
+export interface AddApplicationNoteResponse {
+  message: string;
+  note: {
+    id: string;
+    applicationId: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
