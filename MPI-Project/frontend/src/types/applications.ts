@@ -17,6 +17,19 @@ export interface GetUserApplicationsResponse {
   applications: JobApplication[];
 }
 
+export interface UserApplicationStats {
+  total: number;
+  applied: number;
+  interview: number;
+  offer: number;
+  rejected: number;
+}
+
+export interface GetUserApplicationStatsResponse {
+  message: string;
+  stats: UserApplicationStats;
+}
+
 export interface CreateJobApplicationPayload {
   userId: string;
   companyName: string;
