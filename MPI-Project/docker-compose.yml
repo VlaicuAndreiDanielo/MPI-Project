@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://user:password@db:5432/mpi_db"
+      NODE_ENV: production
+    depends_on:
+      - db
+    networks:
+      - mpi-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      API_URL: "http://backend:3000"
+    depends_on:
+      - backend
+    networks:
+      - mpi-network
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mpi_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mpi-network
+
+networks:
+  mpi-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

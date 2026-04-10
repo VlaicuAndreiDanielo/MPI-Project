@@ -43,6 +43,27 @@ export default defineConfig([
 ])
 ```
 
+## Docker (Frontend)
+
+Build the frontend image:
+
+```bash
+docker build -t mpi-frontend .
+```
+
+Run the frontend container:
+
+```bash
+docker run --rm -p 5173:80 mpi-frontend
+```
+
+The Nginx config includes:
+
+- SPA fallback routing via `try_files ... /index.html` so direct route access and refresh work.
+- API proxy from `/api/*` to `http://host.docker.internal:3000`.
+
+If you run backend as a Docker service, update `frontend/nginx.conf` upstream host from `host.docker.internal` to your backend service name.
+
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
