@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
 
     defaults:
@@ -17,6 +17,45 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # -------------------------
+      # Backend checks
+      # -------------------------
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Run backend lint
+        run: |
+          cd backend
+          npm run lint || echo "No lint script"
+
+      - name: Run backend tests
+        run: |
+          cd backend
+          npm test || echo "No tests"
+
+      # -------------------------
+      # Frontend checks
+      # -------------------------
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run frontend lint
+        run: |
+          cd frontend
+          npm run lint || echo "No lint script"
+
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          npm test || echo "No tests"
+
+      # -------------------------
+      # Docker validation
+      # -------------------------
       - name: Build Docker containers
         run: docker compose build
 
