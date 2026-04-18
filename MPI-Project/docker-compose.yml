@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     build:
@@ -14,6 +12,7 @@ services:
       - db
     networks:
       - mpi-network
+    restart: always
 
   frontend:
     build:
