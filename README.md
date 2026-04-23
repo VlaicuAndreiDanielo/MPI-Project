@@ -71,7 +71,7 @@ The team used GitHub Issues, GitHub Projects, milestones, pull requests, and Git
 
 ### GitHub Projects - Board View
 
-<img width="1919" height="925" alt="Screenshot 2026-04-22 213230" src="https://github.com/user-attachments/assets/5dac0a61-c717-40af-b61b-40613a90989a" />
+<img width="1914" height="861" alt="Screenshot 2026-04-22 212954" src="https://github.com/user-attachments/assets/6a2264d7-ed0a-44de-a4fb-0737ba7edd7b" />
 
 ### Closed Issues
 
